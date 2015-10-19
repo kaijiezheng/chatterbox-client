@@ -1,5 +1,4 @@
-var app = {
-};
+var app = {};
 
 app.init = function() {
   this.server = 'https://api.parse.com/1/classes/chatterbox';
@@ -30,6 +29,13 @@ app.fetch = function () {
     success: function (data) {
       console.log('chatterbox: Messages received');
       console.log(data);
+      // _.each(data.results, function(message) {
+      //   app.addMessage({
+      //     username: message.username,
+      //     text: message.text,
+      //     roomname: message.roomname
+      //   });
+      // });
     },
     error: function (data) {
       console.error('chatterbox: Failed to retrieve messages');
@@ -43,6 +49,7 @@ app.clearMessages = function() {
 
 app.addMessage = function(message) {
   $('#chats').append('<p class="' + message.username + '">' + message.text + '</p>');
+  // &, <, >, ", ', `, , !, @, $, %, (, ), =, +, {, }, [, and ]
 };
 
 app.addRoom = function(message) {
