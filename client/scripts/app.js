@@ -1,13 +1,14 @@
-// YOUR CODE HERE:
 var app = {}; 
 
 app.init = function() {
-
+  this.server = 'https://api.parse.com/1/classes/chatterbox'; 
+  $('body').on('click', '.username', app.addFriend.bind(app));
+  $('body').on('click', '#send', app.handleSubmit.bind(app));
+  $('body').on('click', '#refresh', app.fetch.bind(app));
 }; 
 
 app.send = function(message) {
   $.ajax({
-    // This is the url you should use to communicate with the parse API server.
     url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'POST',
     data: JSON.stringify(message),
@@ -23,34 +24,41 @@ app.send = function(message) {
 
 app.fetch = function() {
   $.ajax({
-    // This is the url you should use to communicate with the parse API server.
     url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'GET',
+    contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message success');
+      // Clear old messages
+      app.clearMessages();
+      // Add each new message from data
+      _.each(data.results, function(message) {
+        app.addMessage(message); 
+      });
     }
   });
 }; 
 
 // M E S S A G E S
 app.clearMessages = function() {
-  $('#chats').empty(); 
+  $('#chats').empty();
 }; 
 
 app.addMessage = function(message) {
   // Extract text
-  var text = message[text]; 
-  var $text = $('<div class="text"></div>'); 
+  // var text = message.text; 
+  // var $text = $('<div class="text"></div>');
 
-  // Extract username
-  var username = message.username; 
-  var $username = $('<div class="username"></div>');
+  // // Extract username
+  // var username = message.username; 
+  // var $username = $('<div class="username"></div>');
   
-  // Extract roomname
-  var roomname = message.roomname;
-  var $roomname = $('<div class="roomname"></div>'); 
+  // // Extract roomname
+  // var roomname = message.roomname;
+  // var $roomname = $('<div class="roomname"></div>'); 
 
-  $('#chats').append($text.append(text));
+  // $('#chats').prepend($text.append(text));
+  $('#chats').append('<li>' + message.text + '</li>'); 
 };
 
 // R O O M
@@ -60,12 +68,22 @@ app.addRoom = function(room) {
 
 // F R I E N D S
 app.addFriend = function() {
-  $('#username').click(function() {
-    alert("Friend added"); 
-  }); 
-}
+  // to do
+};
 
+// S U B M I T
+app.handleSubmit = function() {
+  var text = $('#textbox').val();
+  this.send({
+    username: 'hr3',
+    text: text,
+    roomname: 'lobby'}); 
+};
 
+// Invoke app.init on document ready
+$(document).ready(function() {
+  app.init(); 
+}); 
 
 
 
