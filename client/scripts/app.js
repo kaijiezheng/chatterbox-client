@@ -29,6 +29,7 @@ app.fetch = function() {
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message success');
+      console.log(data);
       // Clear old messages
       app.clearMessages();
       // Add each new message from data
@@ -58,7 +59,7 @@ app.addMessage = function(message) {
   // var $roomname = $('<div class="roomname"></div>'); 
 
   // $('#chats').prepend($text.append(text));
-  $('#chats').append('<li>' + message.text + '</li>'); 
+  $('#chats').append('<li>' + _.escape(message.text) + '</li>'); 
 };
 
 // R O O M
