@@ -88,10 +88,7 @@ app.addRoom = function(room) {
 
 app.changeRoom = function(room) {
   $('div.message').hide();
-  var $selector = $("'" + 'div.message a.' + room + "'");
-  $selector.show();
-  // $('div.message:not(:contains(' + room + '))').hide();
-  // $('li:not(:contains(' + room + '))').hide();
+  $('a.' + room).parent().show();
 }
 
 // F R I E N D S
