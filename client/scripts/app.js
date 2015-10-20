@@ -1,10 +1,19 @@
 var app = {}; 
+app.friends = {};
+app.rooms = {};
 
 app.init = function() {
   this.server = 'https://api.parse.com/1/classes/chatterbox'; 
-  $('body').on('click', '.username', app.addFriend.bind(app));
+  $('body').on('click', '.username', function() {
+    var clickedUser = $(this).text(); 
+    app.addFriend(clickedUser); 
+  }); 
   $('body').on('click', '#send', app.handleSubmit.bind(app));
   $('body').on('click', '#refresh', app.fetch.bind(app));
+  $('#roomSelect').on('change', function() {
+    var clickedRoom = $('#roomSelect option:selected').text();
+    app.changeRoom(clickedRoom);
+  });
 }; 
 
 app.send = function(message) {
@@ -46,30 +55,49 @@ app.clearMessages = function() {
 }; 
 
 app.addMessage = function(message) {
-  // Extract text
-  // var text = message.text; 
-  // var $text = $('<div class="text"></div>');
+  var $container = $('<div class="message"></div>');
+  //Extract text
+  var text = _.unescape(_.escape(message.text)); 
+  var $text = $('<li></li>');
+  text = text ? text : "n/a";
+  $text.text(text); 
 
-  // // Extract username
-  // var username = message.username; 
-  // var $username = $('<div class="username"></div>');
+  // Extract username
+  var username = _.unescape(_.escape(message.username));
+  var $username = $('<a href=# class="username"></a>');
+  username = username ? username : "anonymous";
+  $username.text(username); 
   
   // // Extract roomname
-  // var roomname = message.roomname;
-  // var $roomname = $('<div class="roomname"></div>'); 
+  var roomname = _.unescape(_.escape(message.roomname));
+  var $roomname = $('<a class="' + roomname + '"></a>'); 
+  if (app.rooms[roomname] === undefined) {
+    app.addRoom(roomname);
+    app.rooms[roomname] = roomname;
+  }
 
-  // $('#chats').prepend($text.append(text));
-  $('#chats').append('<li>' + _.escape(message.text) + '</li>'); 
+  $container.append($username).append($roomname).append($text);
+  $('#chats').append($container);
+  // $('#chats').append($username).append($roomname).append($text); 
 };
 
 // R O O M
 app.addRoom = function(room) {
-  $('#roomSelect').append('<p>' + room + '</p>');
+  $('#roomSelect').append('<option>' + room + '</option>');
 }; 
 
+app.changeRoom = function(room) {
+  $('div.message').hide();
+  var $selector = $("'" + 'div.message a.' + room + "'");
+  $selector.show();
+  // $('div.message:not(:contains(' + room + '))').hide();
+  // $('li:not(:contains(' + room + '))').hide();
+}
+
 // F R I E N D S
-app.addFriend = function() {
-  // to do
+app.addFriend = function(friend) {
+  this.friends[friend] = friend; 
+  $('a:contains(' + friend +')').css('font-weight', 'bold'); 
 };
 
 // S U B M I T
