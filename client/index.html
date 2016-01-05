@@ -5,20 +5,27 @@
     <title>chatterbox</title>
     <link rel="stylesheet" href="styles/styles.css">
 
-    <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
-    <!-- your scripts -->
+
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
   </head>
   <body>
     <div id="main">
-      <h1>chatterbox</h1>
-      <!-- Your HTML goes here! -->
+      <h1>Chatterbox</h1>
+
       <input type="text" name="input"/>
       <button id="send" class="submit">Submit</button>
     </div>
+    <div>
+      <select id="roomSelect">
+        <option>Lobby</option>
+      </select>
+    </div>
+    <input id="textbox" type="text">
+    <button id="send" class="submit">Send</button>
+    <button id="refresh" class="submit">Refresh</button>
     <div id="chats"></div>
   </body>
 </html>
